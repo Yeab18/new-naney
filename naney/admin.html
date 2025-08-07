@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | Na-Ney Fashion</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Admin-specific styles */
+    .admin-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    #uploadImageBtn {
+      background: #e91e63;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 0.5rem;
+      transition: background 0.3s;
+    }
+    #uploadImageBtn:hover {
+      background: #c2185b;
+    }
+    #imagePreview {
+      max-width: 300px;
+      margin-top: 1rem;
+      border-radius: 8px;
+      display: none;
+    }
+    #submitProduct {
+      background: black;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+      width: 100%;
+    }
+    #submitProduct:hover {
+      background: #333;
+    }
+    .logout-btn {
+      background: none;
+      border: none;
+      color: #e91e63;
+      cursor: pointer;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+    <ul id="nav-menu">
+      <li><a href="index.html">← Back to Store</a></li>
+      <li><button id="logoutBtn" class="logout-btn">Logout</button></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>Admin Panel</h1>
+    <p>Manage Product Uploads</p>
+  </header>
+
+  <main>
+    <section class="admin-container">
+      <form id="productForm">
+        <div class="form-group">
+          <label>Product Image</label>
+          <button type="button" id="uploadImageBtn">
+            <i class="fas fa-cloud-upload-alt"></i> Upload Image
+          </button>
+          <input type="hidden" id="imageUrl" required>
+          <img id="imagePreview" src="" alt="Preview">
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <input type="text" id="description" required>
+        </div>
+
+        <div class="form-group">
+          <label>Price ($)</label>
+          <input type="number" id="price" step="0.01" min="0" required>
+        </div>
+
+        <div class="form-group">
+          <label>Size</label>
+          <input type="text" id="size" required>
+        </div>
+
+        <div class="form-group">
+          <label>Category</label>
+          <select id="category" required>
+            <option value="">Select Category</option>
+            <option value="coats">Coats</option>
+            <option value="tops">Tops</option>
+            <option value="dresses">Dresses</option>
+            <option value="shoes">Shoes</option>
+            <option value="bags">Bags</option>
+            <option value="pants">Pants</option>
+            <option value="accessories">Accessories</option>
+          </select>
+        </div>
+
+        <button type="submit" id="submitProduct">
+          <i class="fas fa-save"></i> Save Product
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Cloudinary Upload Widget -->
+  <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
+  
+  <!-- Firebase & Implementation -->
+  <script type="module">
+    // Firebase Setup
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+    import { 
+      getFirestore, collection, addDoc 
+    } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+    import { 
+      getAuth, signOut 
+    } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAcP8ABDFtJopiaHMkSSZ-q7m4diXjIPRY",
+      authDomain: "naney-d1e8e.firebaseapp.com",
+      projectId: "naney-d1e8e",
+      storageBucket: "naney-d1e8e.appspot.com",
+      messagingSenderId: "135021574178",
+      appId: "1:135021574178:web:60982ef001d4b3361ff27b",
+      measurementId: "G-7SMTN04YD4"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    // Cloudinary Config
+    const cloudinaryConfig = {
+      cloudName: "dpt3txql5",
+      uploadPreset: "naney_uploads"
+    };
+
+    // Upload Widget
+    document.getElementById('uploadImageBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      const widget = cloudinary.createUploadWidget({
+        cloudName: cloudinaryConfig.cloudName,
+        uploadPreset: cloudinaryConfig.uploadPreset,
+        cropping: true,
+        folder: "naney-products",
+        multiple: false,
+        maxImageFileSize: 5000000, // 5MB
+        clientAllowedFormats: ["jpg", "png", "webp"],
+        styles: {
+          palette: {
+            window: "#FFFFFF",
+            windowBorder: "#e91e63",
+            tabIcon: "#e91e63",
+            menuIcons: "#e91e63",
+            textDark: "#000000",
+            textLight: "#FFFFFF",
+            link: "#e91e63",
+            action: "#FF620C",
+            inactiveTabIcon: "#B3B3B3",
+            error: "#F44235",
+            inProgress: "#0078FF",
+            complete: "#20B832",
+            sourceBg: "#E4EBF1"
+          }
+        }
+      }, (error, result) => {
+        if (!error && result.event === "success") {
+          document.getElementById('imageUrl').value = result.info.secure_url;
+          document.getElementById('imagePreview').src = result.info.secure_url;
+          document.getElementById('imagePreview').style.display = 'block';
+        }
+      });
+      widget.open();
+    });
+
+    // Form Submission
+    document.getElementById('productForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      if (!document.getElementById('imageUrl').value) {
+        alert('Please upload an image first');
+        return;
+      }
+
+      const productData = {
+        description: document.getElementById('description').value,
+        price: parseFloat(document.getElementById('price').value),
+        size: document.getElementById('size').value,
+        category: document.getElementById('category').value,
+        image: document.getElementById('imageUrl').value,
+        createdAt: new Date()
+      };
+
+      try {
+        await addDoc(collection(db, 'products'), productData);
+        alert('Product added successfully!');
+        this.reset();
+        document.getElementById('imagePreview').style.display = 'none';
+      } catch (error) {
+        console.error("Error adding product:", error);
+        alert('Error: ' + error.message);
+      }
+    });
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', async function() {
+      try {
+        await signOut(auth);
+        window.location.href = 'login.html';
+      } catch (error) {
+        console.error("Logout error:", error);
+      }
+    });
+
+    // Mobile menu toggle
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+      document.getElementById('nav-menu').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

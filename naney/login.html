@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | Na-Ney Fashion</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .login-container {
+      max-width: 400px;
+      margin: 5rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+    #loginBtn {
+      background: black;
+      color: white;
+      border: none;
+      padding: 15px;
+      width: 100%;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .error {
+      color: #e91e63;
+      margin-top: 1rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul id="nav-menu">
+      <li><a href="index.html">← Back to Store</a></li>
+    </ul>
+  </nav>
+
+  <div class="login-container">
+    <h1>Admin Login</h1>
+    <form id="loginForm">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="password" required>
+      </div>
+      <button type="submit" id="loginBtn">Login</button>
+      <div id="errorMsg" class="error"></div>
+    </form>
+  </div>
+
+  <script type="module">
+    import { auth, signInWithEmailAndPassword } from './firebase-config.js';
+    
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = 'upload.html'; // Redirect to admin panel
+      } catch (error) {
+        document.getElementById('errorMsg').textContent = error.message;
+      }
+    });
+  </script>
+</body>
+</html>

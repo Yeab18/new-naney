@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Product Upload | Na-Ney Fashion</title>
+  <link rel="stylesheet" href="style.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  />
+  <style>
+    /* Your styles kept unchanged */
+    .upload-container {
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    #uploadWidgetBtn {
+      background: #e91e63;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.3s;
+    }
+    #uploadWidgetBtn:hover {
+      background: #c2185b;
+    }
+    #imagePreview {
+      max-width: 100%;
+      height: auto;
+      margin-top: 1rem;
+      border-radius: 8px;
+      display: none;
+      border: 2px dashed #ddd;
+    }
+    #submitBtn {
+      background: black;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+      width: 100%;
+      margin-top: 1rem;
+    }
+    #submitBtn:hover {
+      background: #333;
+    }
+    .upload-status {
+      text-align: center;
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 6px;
+      display: none;
+    }
+    .success {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    .error {
+      background: #ffebee;
+      color: #c62828;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+    <ul id="nav-menu">
+      <li><a href="index.html">← Back to Store</a></li>
+      <li><a href="login.html" id="logoutBtn">Logout</a></li>
+    </ul>
+  </nav>
+
+  <header>
+    <h1>Product Upload</h1>
+    <p>Add new items to Na-Ney Fashion</p>
+  </header>
+
+  <main>
+    <section class="upload-container">
+      <form id="uploadForm">
+        <div class="form-group">
+          <label>Product Image</label>
+          <button type="button" id="uploadWidgetBtn">
+            <i class="fas fa-cloud-upload-alt"></i> Select Image
+          </button>
+          <input type="hidden" id="imageUrl" required />
+          <img id="imagePreview" src="" alt="Preview" />
+        </div>
+
+        <div class="form-group">
+          <label>Product Name</label>
+          <input type="text" id="productName" required />
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="description" rows="3" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Price (ETB)</label>
+          <input type="number" id="price" min="0" step="0.01" required />
+        </div>
+
+        <div class="form-group">
+          <label>Size</label>
+          <input type="text" id="size" required />
+        </div>
+
+        <div class="form-group">
+          <label>Category</label>
+          <select id="category" required>
+            <option value="">Select Category</option>
+            <option value="coats">Coats</option>
+            <option value="tops">Tops</option>
+            <option value="dresses">Dresses</option>
+            <option value="shoes">Shoes</option>
+            <option value="bags">Bags</option>
+            <option value="pants">Pants</option>
+            <option value="accessories">Accessories</option>
+          </select>
+        </div>
+
+        <button type="submit" id="submitBtn">
+          <i class="fas fa-save"></i> Upload Product
+        </button>
+
+        <div id="statusMessage" class="upload-status"></div>
+      </form>
+    </section>
+
+    <section class="upload-container" style="margin-top: 3rem;">
+      <h2>Manage Products</h2>
+      <div class="form-group">
+        <label for="categoryFilter">Filter by Category</label>
+        <select id="categoryFilter">
+          <option value="">All Categories</option>
+          <option value="coats">Coats</option>
+          <option value="tops">Tops</option>
+          <option value="dresses">Dresses</option>
+          <option value="shoes">Shoes</option>
+          <option value="bags">Bags</option>
+          <option value="pants">Pants</option>
+          <option value="accessories">Accessories</option>
+        </select>
+      </div>
+      <div id="productList"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      &copy; 2025 Na-Ney Fashion |
+      <a href="https://t.me/LAMROT2121" target="_blank"
+        ><i class="fab fa-telegram"></i> Telegram</a
+      >
+      |
+      <a href="https://www.tiktok.com/@naney.fashion" target="_blank"
+        ><i class="fab fa-tiktok"></i> TikTok</a
+      >
+      |
+      <a href="tel:+251961434825"><i class="fas fa-phone-alt"></i> Call Us</a>
+    </p>
+  </footer>
+
+  <!-- Cloudinary Widget -->
+  <script src="https://widget.cloudinary.com/v2.0/global/all.js"></script>
+
+  <!-- Firebase Compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+  apiKey: "AIzaSyAcP8ABDFtJopiaHMkSSZ-q7m4diXjIPRY",
+  authDomain: "naney-d1e8e.firebaseapp.com",
+  projectId: "naney-d1e8e",
+  storageBucket: "naney-d1e8e.appspot.com",
+  messagingSenderId: "135021574178",
+  appId: "1:135021574178:web:60982ef001d4b3361ff27b",
+  measurementId: "G-7SMTN04YD4",
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+// Cloudinary config object
+const cloudinaryConfig = {
+  cloudName: "dpt3txql5",
+  uploadPreset: "naney_uploads",
+  folder: "naney-products",
+  cropping: true,
+  croppingAspectRatio: 1,
+  clientAllowedFormats: ["jpg", "png", "webp"],
+  maxFileSize: 5000000,
+};
+
+// Create Cloudinary Upload Widget once
+const myWidget = cloudinary.createUploadWidget(
+  {
+    cloudName: cloudinaryConfig.cloudName,
+    uploadPreset: cloudinaryConfig.uploadPreset,
+    folder: cloudinaryConfig.folder,
+    cropping: cloudinaryConfig.cropping,
+    croppingAspectRatio: cloudinaryConfig.croppingAspectRatio,
+    clientAllowedFormats: cloudinaryConfig.clientAllowedFormats,
+    maxFileSize: cloudinaryConfig.maxFileSize,
+  },
+  (error, result) => {
+    if (!error && result && result.event === "success") {
+      document.getElementById("imageUrl").value = result.info.secure_url;
+      const img = document.getElementById("imagePreview");
+      img.src = result.info.secure_url;
+      img.style.display = "block";
+      showStatus("Image uploaded successfully!", "success");
+    } else if (error) {
+      showStatus("Upload failed: " + error.message, "error");
+    }
+  }
+);
+
+// Open the widget when button clicked
+document
+  .getElementById("uploadWidgetBtn")
+  .addEventListener("click", () => myWidget.open());
+
+// Handle form submission
+document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const imageUrl = document.getElementById("imageUrl").value;
+  if (!imageUrl) {
+    showStatus("Please upload an image first", "error");
+    return;
+  }
+  const productData = {
+    name: document.getElementById("productName").value,
+    description: document.getElementById("description").value,
+    price: parseFloat(document.getElementById("price").value),
+    size: document.getElementById("size").value,
+    category: document.getElementById("category").value,
+    image: imageUrl,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+  };
+  try {
+    await db.collection("products").add(productData);
+    showStatus("✅ Product uploaded successfully!", "success");
+    document.getElementById("uploadForm").reset();
+    document.getElementById("imagePreview").style.display = "none";
+    loadProducts();
+  } catch (err) {
+    showStatus("Firestore Error: " + err.message, "error");
+  }
+});
+
+// Show status messages
+function showStatus(message, type) {
+  const status = document.getElementById("statusMessage");
+  status.textContent = message;
+  status.className = `upload-status ${type}`;
+  status.style.display = "block";
+  setTimeout(() => (status.style.display = "none"), 5000);
+}
+
+// Logout functionality
+document.getElementById("logoutBtn").addEventListener("click", (e) => {
+  e.preventDefault();
+  auth.signOut().then(() => (window.location.href = "login.html"));
+});
+
+// Redirect if not logged in
+auth.onAuthStateChanged((user) => {
+  if (!user) window.location.href = "login.html";
+});
+
+// Mobile menu toggle
+document.getElementById("menu-toggle").addEventListener("click", () => {
+  document.getElementById("nav-menu").classList.toggle("open");
+});
+
+// Filter dropdown change event
+document.getElementById("categoryFilter").addEventListener("change", loadProducts);
+
+async function loadProducts() {
+  const category = document.getElementById("categoryFilter").value;
+  let query = db.collection("products");
+
+  if (category) {
+    // Filter only by category, no ordering
+    query = query.where("category", "==", category);
+  } else {
+    // No filter, order by createdAt descending
+    query = query.orderBy("createdAt", "desc");
+  }
+
+  try {
+    const snapshot = await query.get();
+    const productList = document.getElementById("productList");
+    productList.innerHTML = "";
+
+    if (snapshot.empty) {
+      productList.innerHTML = "<p>No products found.</p>";
+      return;
+    }
+
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      const item = document.createElement("div");
+      item.style.marginBottom = "2rem";
+      item.style.padding = "1rem";
+      item.style.border = "1px solid #ddd";
+      item.style.borderRadius = "8px";
+
+      const cat = data.category || "Uncategorized";
+
+      item.innerHTML = `
+        <img src="${data.image}" alt="${data.name}" style="max-width: 100px; border-radius: 8px;" /><br/>
+        <strong>${data.name}</strong><br/>
+        ${data.description}<br/>
+        Size: ${data.size} | Price: ${data.price} ETB<br/>
+        Category: ${cat}<br/>
+        <button onclick="deleteProduct('${doc.id}')"
+        style="margin-top: 0.5rem; background: #e53935; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer;">
+        Delete</button>
+      `;
+
+      productList.appendChild(item);
+    });
+  } catch (err) {
+    showStatus("Error loading products: " + err.message, "error");
+  }
+}
+
+// Delete product function (removes from Firestore)
+async function deleteProduct(docId) {
+  if (!confirm("Are you sure you want to delete this product?")) return;
+
+  try {
+    await db.collection("products").doc(docId).delete();
+    showStatus("Product deleted successfully.", "success");
+    loadProducts();
+  } catch (err) {
+    showStatus("Error deleting product: " + err.message, "error");
+  }
+}
+
+// Load products initially on page load
+window.onload = loadProducts;
+  </script>
+</body>
+</html>
