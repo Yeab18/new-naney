@@ -5,6 +5,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Na-Ney Fashion - Cart</title>
     <link rel="stylesheet" href="style.css" />
+    <style>
+      #cartItems {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        padding-top: 2rem;
+        padding-left: 8rem;
+        justify-content: flex-start;
+      }
+
+      .cart-item {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        width: 300px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        padding: 0.6rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 0.8rem;
+      }
+
+      .cart-item img {
+        width: 100%;
+        height: 190px;
+        object-fit: cover;
+        border-radius: 6px;
+        margin-bottom: 0.4rem;
+      }
+
+      .cart-details {
+        width: 100%;
+        text-align: left;
+        padding: 0.2rem 0;
+      }
+
+      .cart-details p {
+        margin: 0.2rem 0;
+        color: #333;
+        font-size: 0.85rem;
+        font-weight: 400;
+      }
+
+      .cart-quantity {
+        width: 40px;
+        font-size: 0.95rem;
+        padding: 3px;
+        margin: 0.3rem 0;
+      }
+
+      .cart-item-remove {
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        padding: 4px 8px;
+        margin-left: 28px;
+        border-radius: 5px;
+        font-size: 0.7rem;
+        cursor: pointer;
+        margin-top: 0.2rem;
+      }
+
+      .cart-item-remove:hover {
+        background-color: #d63031;
+      }
+
+      .cart-total {
+        width: 100%;
+        text-align: left;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin: 2rem 10rem;
+        color: #111;
+      }
+
+      #clearCartBtn {
+        padding: 0.5rem 1rem;
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        margin-left: 13rem;
+        margin-bottom: 2rem;
+      }
+
+      @media (max-width: 768px) {
+        .cart-item {
+          width: 45%;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .cart-item {
+          width: 100%;
+        }
+      }
+    </style>
   </head>
   <body>
     <nav>
@@ -20,27 +120,25 @@
         <li><a href="accessories.html">Accessories</a></li>
         <li><a href="cart.html" class="active">Cart</a></li>
         <li><a href="contact.html">Contact</a></li>
-      
       </ul>
     </nav>
 
     <header>
-      <h1>Na-Ney Fashion</h1>
+     <h1>ና-ነይ</h1>
       <p>Your Shopping Cart</p>
     </header>
 
     <main>
       <section id="cartItems"></section>
       <div id="cartTotal" class="cart-total"></div>
+      <button id="clearCartBtn">Clear Cart</button>
     </main>
 
     <footer>
       <p>
         &copy; 2025 Na-Ney Fashion |
         <a href="https://t.me/LAMROT2121" target="_blank">Telegram</a> |
-        <a href="https://www.tiktok.com/@naney.fashion" target="_blank"
-          >TikTok</a
-        >
+        <a href="https://www.tiktok.com/@naney.fashion" target="_blank">TikTok</a>
         |
         <a href="tel:+251961434825">Call Us</a>
       </p>
@@ -57,6 +155,7 @@
       const CART_KEY = "naneyFashionCart";
       const cartItemsSection = document.getElementById("cartItems");
       const cartTotalDiv = document.getElementById("cartTotal");
+      const clearCartBtn = document.getElementById("clearCartBtn");
 
       function getCart() {
         const cart = localStorage.getItem(CART_KEY);
@@ -74,9 +173,11 @@
         if (cart.length === 0) {
           cartItemsSection.innerHTML = "<p>Your cart is empty.</p>";
           cartTotalDiv.textContent = "";
+          clearCartBtn.style.display = "none";
           return;
         }
 
+        clearCartBtn.style.display = "inline-block";
         let totalPrice = 0;
 
         cart.forEach((item, index) => {
@@ -97,7 +198,8 @@
           sizeP.textContent = item.size ? `Size: ${item.size}` : "";
 
           const priceP = document.createElement("p");
-          priceP.textContent = `Price: ${item.price}`;
+          const cleanPrice = item.price.replace(/\$/g, '');
+          priceP.textContent = `Price: ETB ${cleanPrice}`;
 
           const quantityLabel = document.createElement("label");
           quantityLabel.textContent = "Quantity: ";
@@ -137,14 +239,19 @@
           itemDiv.appendChild(detailsDiv);
           cartItemsSection.appendChild(itemDiv);
 
-          // calculate total price
-          const priceNum =
-            parseFloat(item.price.replace(/[^0-9.-]+/g, "")) || 0;
+          const priceNum = parseFloat(cleanPrice) || 0;
           totalPrice += priceNum * item.quantity;
         });
 
-        cartTotalDiv.textContent = `Total: $${totalPrice.toFixed(2)}`;
+        cartTotalDiv.textContent = `Total: ETB ${totalPrice.toFixed(2)}`;
       }
+
+      // Clear cart button
+      clearCartBtn.addEventListener("click", () => {
+        localStorage.removeItem(CART_KEY);
+        renderCart();
+        alert("Cart has been cleared.");
+      });
 
       document.addEventListener("DOMContentLoaded", renderCart);
     </script>

@@ -1,305 +1,333 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Na-Ney Fashion | Accessories</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    /* Product grid styles */
-.product-link {
-  background-color: #000;
-  border-radius: 12px;
-  overflow: hidden;
-  text-decoration: none;
-  color: #f5f5f5;
-  transition: transform 0.3s;
-  display: block;
-}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Na-Ney Fashion | Accessories</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      /* Product grid styles */
+      .product-link {
+        cursor: pointer;
+        background-color: #f9e5e543;
+        border: 2px solid rgba(221, 213, 204, 0.32);
+        border-radius: 25px;
+        overflow: hidden;
+        text-decoration: none;
+        color: #f5f5f5;
+        transition: transform 0.3s;
+        display: block;
+      }
 
-.product-link:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(255,255,255,0.1);
-}
+      .product-link:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(255, 255, 255, 0.1);
+      }
 
-.product-link img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-bottom: 1px solid #444;
-}
+      .product-link img {
+        width: 100%;
+        height: 80%;
+        object-fit: cover;
+        border-bottom: 1px solid #444;
+      }
 
-.product-link p {
-  padding: 0.8rem;
-  margin: 0;
-  font-weight: 600;
-  text-align: center;
-  color: #f5f5f5;
-}
+      .product-link p {
+        padding: 0.8rem;
+        margin: 0;
+        font-weight: 300;
+        text-align: center;
+        color: #000000;
+      }
 
-.loading {
-  text-align: center;
-  font-size: 1.2rem;
-  color: #f5f5f5;
-  padding: 2rem;
-  background: #1c1c1c;
-  border-radius: 8px;
-  max-width: 300px;
-  margin: 2rem auto;
-}
+      .loading {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #f5f5f5;
+        padding: 2rem;
+        background: #1c1c1c;
+        border-radius: 8px;
+        max-width: 300px;
+        margin: 2rem auto;
+      }
 
-/* Modal styles (must be included in every page) */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.9);
-  overflow: auto;
-}
+      /* Modal styles (must be included in every page) */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        overflow: auto;
+      }
 
-.modal-content {
-  background-color: #1c1c1c;
-  color: #f5f5f5;
-  margin: 10% auto;
-  padding: 2rem;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 450px;
-  position: relative;
-  box-shadow: 0 4px 20px rgba(255,255,255,0.1);
-}
+      .modal-content {
+        background-color: #1c1c1c;
+        color: #f5f5f5;
+        margin: 10% auto;
+        padding: 2rem;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 450px;
+        position: relative;
+        box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+      }
 
-.modal-close {
-  color: #f5f5f5;
-  position: absolute;
-  top: 12px;
-  right: 20px;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
+      .modal-close {
+        color: #f5f5f5;
+        position: absolute;
+        top: 12px;
+        right: 20px;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
 
-.modal-close:hover {
-  color: #ffffff;
-}
+      .modal-close:hover {
+        color: #ffffff;
+      }
 
-#modalImage {
-  width: 100%;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-}
+      #modalImage {
+        width: 100%;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+      }
 
-.modal-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 1.5rem;
-  gap: 10px;
-}
+      .modal-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1.5rem;
+        gap: 10px;
+      }
 
-#modalQuantity {
-  width: 60px;
-  padding: 8px;
-  border: 1px solid #555;
-  border-radius: 4px;
-  text-align: center;
-  background: #000;
-  color: #f5f5f5;
-}
+      #modalQuantity {
+        width: 60px;
+        padding: 8px;
+        border: 1px solid #555;
+        border-radius: 4px;
+        text-align: center;
+        background: #000;
+        color: #f5f5f5;
+      }
 
-#addToCartBtn {
-  background-color: #333;
-  color: #f5f5f5;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s;
-}
+      #addToCartBtn {
+        background-color: #333;
+        color: #f5f5f5;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background 0.3s;
+      }
 
-#addToCartBtn:hover {
-  background-color: #555;
-}
-</style>
-</head>
-<body>
-  <!-- Navigation (complete markup) -->
-  <nav>
-    <div class="menu-toggle" id="menu-toggle">&#9776;</div>
-    <ul id="nav-menu">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="coats.html">Coats</a></li>
-      <li><a href="tops.html">Tops</a></li>
-      <li><a href="dresses.html">Dresses</a></li>
-      <li><a href="shoes.html">Shoes</a></li>
-      <li><a href="bags.html">Bags</a></li>
-      <li><a href="pants.html">Pants</a></li>
-      <li><a href="accessories.html" class="active">Accessories</a></li>
-      <li><a href="cart.html">Cart</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
+      #addToCartBtn:hover {
+        background-color: #ff0000a1;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation (complete markup) -->
+    <nav>
+      <div class="menu-toggle" id="menu-toggle">&#9776;</div>
+      <ul id="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="coats.html">Coats</a></li>
+        <li><a href="tops.html">Tops</a></li>
+        <li><a href="dresses.html">Dresses</a></li>
+        <li><a href="shoes.html">Shoes</a></li>
+        <li><a href="bags.html">Bags</a></li>
+        <li><a href="pants.html">Pants</a></li>
+        <li><a href="accessories.html" class="active">Accessories</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
 
-  <!-- Header -->
-  <header>
-    <h1>Na-Ney Accessories</h1>
-    <p>Ethiopian Finishing Touches</p>
-  </header>
+    <!-- Header -->
+    <header>
+    <h1>ና-ነይ</h1>
+    <p>Accessories</p>
+    </header>
 
-  <!-- Main Content -->
-  <main>
-    <section class="coat-gallery" id="products-container">
-      <div class="loading">Loading accessories...</div>
-    </section>
-  </main>
+    <!-- Main Content -->
+    <main>
+      <section class="coat-gallery" id="products-container">
+        <div class="loading">Loading accessories...</div>
+      </section>
+    </main>
 
-  <!-- Product Modal (complete markup) -->
-  <div id="productModal" class="modal">
-    <div class="modal-content">
-      <span class="modal-close">&times;</span>
-      <img id="modalImage" src="" alt="Product Image">
-      <h2 id="modalTitle"></h2>
-      <p id="modalDescription"></p>
-      <p class="price" id="modalPrice"></p>
-      <div class="modal-controls">
-        <input type="number" id="modalQuantity" value="1" min="1">
-        <button id="addToCartBtn">Add to Cart</button>
+    <!-- Product Modal (complete markup) -->
+    <div id="productModal" class="modal">
+      <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <img id="modalImage" src="" alt="Product Image" />
+        <h2 id="modalTitle"></h2>
+        <p id="modalDescription"></p>
+        <p class="price" id="modalPrice"></p>
+        <div class="modal-controls">
+          <input type="number" id="modalQuantity" value="1" min="1" />
+          <button id="addToCartBtn">Add to Cart</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Footer (complete markup) -->
-  <footer>
-    <p>&copy; 2025 Na-Ney Fashion | 
-      <a href="https://t.me/LAMROT2121" target="_blank"><i class="fab fa-telegram"></i> Telegram</a> | 
-      <a href="https://www.tiktok.com/@naney.fashion" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a> | 
-      <a href="tel:+251961434825"><i class="fas fa-phone-alt"></i> Call Us</a>
-    </p>
-  </footer>
+    <!-- Footer (complete markup) -->
+    <footer>
+      <p>
+        &copy; 2025 Na-Ney Fashion |
+        <a href="https://t.me/LAMROT2121" target="_blank"
+          ><i class="fab fa-telegram"></i> Telegram</a
+        >
+        |
+        <a href="https://www.tiktok.com/@naney.fashion" target="_blank"
+          ><i class="fab fa-tiktok"></i> TikTok</a
+        >
+        |
+        <a href="tel:+251961434825"><i class="fas fa-phone-alt"></i> Call Us</a>
+      </p>
+    </footer>
 
-  <!-- JavaScript (complete implementation) -->
-  <script type="module">
-    // Firebase Imports (must be in every category page)
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-    import { 
-      getFirestore, collection, getDocs 
-    } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+    <!-- JavaScript (complete implementation) -->
+    <script type="module">
+      // Firebase Imports (must be in every category page)
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
-    // Your Firebase Config (same for all pages)
-    const firebaseConfig = {
-      apiKey: "AIzaSyAcP8ABDFtJopiaHMkSSZ-q7m4diXjIPRY",
-      authDomain: "naney-d1e8e.firebaseapp.com",
-      projectId: "naney-d1e8e",
-      storageBucket: "naney-d1e8e.appspot.com",
-      messagingSenderId: "135021574178",
-      appId: "1:135021574178:web:60982ef001d4b3361ff27b",
-      measurementId: "G-7SMTN04YD4"
-    };
+      // Your Firebase Config (same for all pages)
+      const firebaseConfig = {
+        apiKey: "AIzaSyAcP8ABDFtJopiaHMkSSZ-q7m4diXjIPRY",
+        authDomain: "naney-d1e8e.firebaseapp.com",
+        projectId: "naney-d1e8e",
+        storageBucket: "naney-d1e8e.appspot.com",
+        messagingSenderId: "135021574178",
+        appId: "1:135021574178:web:60982ef001d4b3361ff27b",
+        measurementId: "G-7SMTN04YD4",
+      };
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
 
-    // Load Accessories Products
-    async function loadProducts() {
-      try {
-        const querySnapshot = await getDocs(collection(db, "products"));
-        const container = document.getElementById('products-container');
-        let html = '';
-        
-        querySnapshot.forEach(doc => {
-          const product = doc.data();
-          if (product.category === "accessories") {
-            html += `
-              <a href="#" class="product-link" data-product='${JSON.stringify(product)}'>
+      // Load Accessories Products
+      async function loadProducts() {
+        try {
+          const querySnapshot = await getDocs(collection(db, "products"));
+          const container = document.getElementById("products-container");
+          let html = "";
+
+          querySnapshot.forEach((doc) => {
+            const product = doc.data();
+            if (product.category === "accessories") {
+              html += `
+              <a href="#" class="product-link" data-product='${JSON.stringify(
+                product
+              )}'>
                 <img src="${product.image}" alt="${product.description}">
-                <p>${product.description} - $${product.price}</p>
+                <p>${product.description} - ETB ${product.price}</p>
               </a>
             `;
+            }
+          });
+
+          container.innerHTML =
+            html || '<p class="loading">No accessories found</p>';
+          setupModalListeners();
+        } catch (error) {
+          console.error("Error loading products:", error);
+          document.getElementById("products-container").innerHTML =
+            '<p class="loading">Error loading products. Please try again.</p>';
+        }
+      }
+
+      // Modal Functions (must be in every category page)
+      function setupModalListeners() {
+        // Product click handlers
+        document.querySelectorAll(".product-link").forEach((item) => {
+          item.addEventListener("click", function (e) {
+            e.preventDefault();
+            const product = JSON.parse(this.dataset.product);
+            openModal(product);
+          });
+        });
+
+        // Close modal button
+        document
+          .querySelector(".modal-close")
+          .addEventListener("click", closeModal);
+
+        // Add to cart button
+        document
+          .getElementById("addToCartBtn")
+          .addEventListener("click", addToCart);
+      }
+
+      function openModal(product) {
+        document.getElementById("modalImage").src = product.image;
+        document.getElementById("modalTitle").textContent = product.description;
+        document.getElementById(
+          "modalDescription"
+        ).textContent = `Size: ${product.size}`;
+        document.getElementById("modalPrice").textContent = `$${product.price}`;
+        document.getElementById("productModal").style.display = "block";
+      }
+
+      function closeModal() {
+        document.getElementById("productModal").style.display = "none";
+      }
+
+   function addToCart() {
+  const quantity = parseInt(document.getElementById("modalQuantity").value);
+  const product = {
+    description: document.getElementById("modalTitle").textContent,
+    price: document.getElementById("modalPrice").textContent, // Keep as string like "$59.99"
+    size: document
+      .getElementById("modalDescription")
+      .textContent.replace("Size: ", ""),
+    image: document.getElementById("modalImage").src,
+    quantity,
+  };
+
+  const CART_KEY = "naneyFashionCart"; // Use same key as cart.html
+  let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+  cart.push(product);
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+
+  alert(`${quantity} item(s) added to cart`);
+  document.getElementById("productModal").style.display = "none";
+}
+
+
+
+      // Mobile Menu Toggle (must be in every page)
+      document
+        .getElementById("menu-toggle")
+        .addEventListener("click", function () {
+          document.getElementById("nav-menu").classList.toggle("open");
+        });
+
+      // Initialize page
+      document.addEventListener("DOMContentLoaded", function () {
+        loadProducts();
+
+        // Close modal if clicked outside content
+        window.addEventListener("click", function (event) {
+          if (event.target === document.getElementById("productModal")) {
+            closeModal();
           }
         });
-        
-        container.innerHTML = html || '<p class="loading">No accessories found</p>';
-        setupModalListeners();
-      } catch (error) {
-        console.error("Error loading products:", error);
-        document.getElementById('products-container').innerHTML = 
-          '<p class="loading">Error loading products. Please try again.</p>';
-      }
-    }
-
-    // Modal Functions (must be in every category page)
-    function setupModalListeners() {
-      // Product click handlers
-      document.querySelectorAll('.product-link').forEach(item => {
-        item.addEventListener('click', function(e) {
-          e.preventDefault();
-          const product = JSON.parse(this.dataset.product);
-          openModal(product);
-        });
       });
-      
-      // Close modal button
-      document.querySelector('.modal-close').addEventListener('click', closeModal);
-      
-      // Add to cart button
-      document.getElementById('addToCartBtn').addEventListener('click', addToCart);
-    }
-
-    function openModal(product) {
-      document.getElementById('modalImage').src = product.image;
-      document.getElementById('modalTitle').textContent = product.description;
-      document.getElementById('modalDescription').textContent = `Size: ${product.size}`;
-      document.getElementById('modalPrice').textContent = `$${product.price}`;
-      document.getElementById('productModal').style.display = 'block';
-    }
-
-    function closeModal() {
-      document.getElementById('productModal').style.display = 'none';
-    }
-
-    function addToCart() {
-      const quantity = parseInt(document.getElementById('modalQuantity').value);
-      if (isNaN(quantity)) return;
-      
-      const product = {
-        description: document.getElementById('modalTitle').textContent,
-        price: parseFloat(document.getElementById('modalPrice').textContent.replace('$','')),
-        size: document.getElementById('modalDescription').textContent.replace('Size: ',''),
-        image: document.getElementById('modalImage').src,
-        quantity: quantity
-      };
-      
-      let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
-      cart.push(product);
-      sessionStorage.setItem('cart', JSON.stringify(cart));
-      
-      alert(`${quantity} ${quantity > 1 ? 'items' : 'item'} added to cart`);
-      closeModal();
-    }
-
-    // Mobile Menu Toggle (must be in every page)
-    document.getElementById('menu-toggle').addEventListener('click', function() {
-      document.getElementById('nav-menu').classList.toggle('open');
-    });
-
-    // Initialize page
-    document.addEventListener('DOMContentLoaded', function() {
-      loadProducts();
-      
-      // Close modal if clicked outside content
-      window.addEventListener('click', function(event) {
-        if (event.target === document.getElementById('productModal')) {
-          closeModal();
-        }
-      });
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>

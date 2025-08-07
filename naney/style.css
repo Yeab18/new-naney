@@ -6,7 +6,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
 }
@@ -15,7 +16,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   background-color: white;
   color: black;
@@ -29,7 +30,7 @@ nav {
   top: 0;
   width: 100%;
   background: white;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   padding: 0 20px;
 }
@@ -49,20 +50,25 @@ nav li {
 
 nav a {
   text-decoration: none;
-  color: #333;
-  font-weight: 600;
+  color: #000000;
+  font-weight: 400;
   padding: 5px 0;
   position: relative;
   transition: color 0.3s;
 }
+nav a:hover {
+  text-decoration: none;
+  color: #b83737;
+  transition: color 0.3s;
+}
 
 nav a.active {
-  color: rgb(132, 0, 0);
-  text-decoration: ;
+  color: rgb(212, 0, 0);
+  text-decoration:none;
 }
 
 nav a.active::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -82,20 +88,22 @@ nav a.active::after {
 header {
   text-align: center;
   padding: 1.6rem 1rem;
-  background: black;
+  background: #2c2929;
 }
 
 header h1 {
-  font-size: 2.8rem;
+  font-size: 3.2rem;
   margin-bottom: 0.5rem;
-  color: bisque;
-  font-family: 'Brush Script MT', cursive;
-  font-weight: lighter;
+  color: rgb(255, 255, 255);
+  font-family:Arial, Helvetica, sans-serif;
+  font-weight:500;
 }
 
 header p {
   font-size: 1.2rem;
-  color:rgb(232, 210, 182);
+  color: rgb(197, 186, 171);
+   font-family: 'Poppins', sans-serif,;
+   font-style:italic;
 }
 
 /* Main Content */
@@ -109,7 +117,7 @@ footer {
   color: white;
   text-align: center;
   padding: 0.5rem;
-margin-top: 70px;
+  margin-top: 70px;
 }
 
 footer a {
@@ -128,7 +136,7 @@ footer a:hover {
   .menu-toggle {
     display: block;
   }
-  
+
   nav ul {
     flex-direction: column;
     max-height: 0;
@@ -136,24 +144,25 @@ footer a:hover {
     transition: max-height 0.3s;
     padding: 0;
   }
-  
+
   nav ul.open {
     max-height: 500px;
     padding: 1rem 0;
   }
-  
+
   nav li {
     margin: 5px 0;
     text-align: center;
   }
-  
+
   header h1 {
     font-size: 2.2rem;
   }
 }
 
 /* Gallery Grid */
-.gallery, .coat-gallery {
+.gallery,
+.coat-gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
@@ -170,7 +179,7 @@ footer a:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0, 0, 0, 0.7);
   z-index: 1000;
   justify-content: center;
   align-items: center;
